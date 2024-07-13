@@ -1,23 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useLayoutEffect } from "react";
+import { Route, Routes, Link } from "react-router-dom";
+import "./App.css";
+import Home from "./Components/Home";
+import News from "./Components/News";
+import Contact from "./Components/Contact";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ul>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+
+        <li>
+          <Link to="/News">News</Link>
+        </li>
+
+        <li>
+          <Link to="/Contact">Contact</Link>
+        </li>
+      </ul>
+      <Routes>
+        <Route path="/" element={<Home></Home>} />
+        <Route path="/News" element={<News></News>} />
+        <Route path="/Contact" element={<Contact></Contact>} />
+      </Routes>
     </div>
   );
 }
