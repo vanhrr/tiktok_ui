@@ -6,15 +6,6 @@ import { publicRoutes } from "./routes";
 function App() {
   return (
     <div>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-
-        <li>
-          <Link to="/following">Following</Link>
-        </li>
-      </ul>
       <Routes>
         {publicRoutes.map((route, key) => {
           const Page = route.component;
