@@ -2,13 +2,52 @@ import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleXmark,
+  faEarthAsia,
+  faEllipsisVertical,
   faMagnifyingGlass,
+  faMoon,
+  faQuestionCircle,
+  faScrewdriverWrench,
   faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Header.module.scss";
 import clsx from "clsx";
+import Tippy from "@tippyjs/react/headless";
+import "tippy.js/dist/tippy.css";
+import { useState } from "react";
+
+import { Wrapper as PopperWrapper } from "~/Components/Popper/Wrapper";
+import AccountItem from "~/Components/AccountItem";
+import Button from "~/Components/Button";
+import Menu from "~/Components/Popper/Menu/Menu";
+
 const cx = classNames.bind(styles);
+const MENU_ITEMS = [
+  {
+    icon: <FontAwesomeIcon icon={faScrewdriverWrench} />,
+    title: "Công cụ dành cho nhà sáng tạo",
+  },
+  {
+    icon: <FontAwesomeIcon icon={faEarthAsia} />,
+    title: "Tiếng Việt",
+  },
+  {
+    icon: <FontAwesomeIcon icon={faQuestionCircle} />,
+    title: "Phản hồi và trợ giúp",
+    to: "/feedback",
+  },
+  {
+    icon: <FontAwesomeIcon icon={faMoon} />,
+    title: "Chế độ tối",
+  },
+];
 function Header() {
+  const [searchInput, setSearchInput] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
+
+  const handleOnChange = (e) => {
+    setSearchInput(e.target.value);
+  };
   return (
     <header className={clsx(styles.wrapper)}>
       <div className={cx("inner")}>
@@ -54,21 +93,45 @@ function Header() {
             ></path>
           </svg>
         </div>
-        <div className={cx("searchBar")}>
-          <input
-            type="text"
-            className={cx("searchInput")}
-            placeholder="vanhrr"
-          />
-          <button className={cx("clear")}>
-            <FontAwesomeIcon icon={faCircleXmark} />
-          </button>
-          <FontAwesomeIcon className={cx("load")} icon={faSpinner} />
-          <button className={cx("searchIcon")}>
-            <FontAwesomeIcon icon={faMagnifyingGlass} />
-          </button>
-        </div>
+        <Tippy
+          visible={searchInput.length > 0}
+          render={(attrs) => (
+            <div className={cx("searchResult")} tabIndex="-1" {...attrs}>
+              <PopperWrapper>
+                <AccountItem></AccountItem>
+                <AccountItem></AccountItem>
+                <AccountItem></AccountItem>
+              </PopperWrapper>
+            </div>
+          )}
+        >
+          <div className={cx("searchBar")}>
+            <input
+              type="text"
+              className={cx("searchInput")}
+              placeholder="vanhrr"
+              onChange={handleOnChange}
+            />
+            <button className={cx("clear")}>
+              <FontAwesomeIcon icon={faCircleXmark} />
+            </button>
+            <FontAwesomeIcon className={cx("load")} icon={faSpinner} />
+            <button className={cx("searchIcon")}>
+              <FontAwesomeIcon icon={faMagnifyingGlass} />
+            </button>
+          </div>
+        </Tippy>
         <div className={cx("headerAction")}>
+          <Button primary medium>
+            Log in
+          </Button>
+          <Menu items={MENU_ITEMS}>
+            <button className={cx("moreAction")}>
+              <FontAwesomeIcon icon={faEllipsisVertical} />
+            </button>
+          </Menu>
+        </div>
+        {/* <div className={cx("headerAction")}>
           <div className={cx("upload")}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +170,7 @@ function Header() {
             </svg>
           </div>
           <div className={cx("profile")}></div>
-        </div>
+        </div> */}
       </div>
     </header>
   );

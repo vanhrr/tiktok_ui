@@ -1,0 +1,22 @@
+.wrapper {
+  width: 100%;
+  display: flex;
+  padding: 0px 16px;
+  img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 16px;
+  }
+  padding-top: 8px;
+}
+.name {
+  .icon {
+    margin-left: 8px;
+    color: rgb(70, 70, 240);
+  }
+}
+.userName {
+  font-size: 1.3rem;
+  color: gray;
+}

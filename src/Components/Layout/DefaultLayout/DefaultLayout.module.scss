@@ -8,6 +8,7 @@
   width: 100%;
   min-height: 1000px;
   display: flex;
+  z-index: -1;
 }
 .content {
   flex: 1;
