@@ -19,76 +19,11 @@
   align-self: center;
   display: flex;
 }
-.searchBar {
-  display: flex;
-  height: var(--search-height);
-  width: var(--search-bar-width);
-  border-radius: 92px;
-  background-color: #f1f1f1;
-  overflow: hidden;
-  padding-left: 16px;
-  align-items: center;
-  position: relative;
-  &::after {
-    content: "";
-    position: absolute;
-    right: var(--search-button-width);
-    top: var(--top-space);
-    width: 1px;
-    height: calc(var(--search-height) - var(--top-space) * 2);
-    background-color: rgba(105, 109, 126, 0.34);
-  }
-  &:hover {
-    outline: 1px solid rgba(22, 24, 35, 0.34);
-    .searchIcon {
-      background-color: rgb(211, 203, 203);
-    }
-  }
-}
-.searchResult {
-  width: 500px;
-}
-.searchInput {
-  flex: 1;
-  border: none;
-  background-color: #f1f1f1;
-  outline: none;
-  font-size: 1.6rem;
-  height: 100%;
-}
-.searchInput:not(:placeholder-shown) ~ .clear {
-  display: block;
-}
-.searchInput:not(:placeholder-shown) ~ .load {
-  display: block;
-}
-.searchIcon {
-  border: none;
-  color: rgba(22, 24, 35, 0.34);
-  width: 52px;
-  height: 100%;
-  font-size: 1.8rem;
-  &:hover {
-    cursor: pointer;
-  }
-}
-.clear,
-.load {
-  display: none;
-  color: rgba(22, 24, 35, 0.34);
-  font-size: 1.6rem;
-  border: none;
-  position: absolute;
-  transform: 50%;
-  translate: (-50%, -50%);
-  right: calc(var(--search-button-width) + 8px);
-}
-.load {
-}
+
 .headerAction {
   display: flex;
-  gap: 10px;
-
+  gap: 26px;
+  font-size: 2rem;
   justify-content: space-around;
   align-items: center;
   .upload {
@@ -97,16 +32,19 @@
     border-radius: 4px;
     display: flex;
     align-items: center;
-    min-width: 11rem;
-    font-weight: bold;
-
-    .bi-plus {
+    height: 36px;
+    font-weight: 600;
+    font-size: 16px;
+    .uploadIcon {
       margin-right: 10px;
+    }
+    &:hover {
+      cursor: pointer;
+      background-color: rgb(245, 238, 238);
     }
   }
   .message {
-    .bi-send {
-    }
+    z-index: 4;
   }
 }
 .upload,
@@ -115,18 +53,28 @@
   display: flex;
   justify-items: center;
 }
-.profile {
-  display: block;
-  height: 40px;
-  width: 40px;
-  background-color: black;
-  border-radius: 50%;
-}
 .moreAction {
+  font-size: 2rem;
   border: none;
   background-color: white;
-  padding: 16px;
-  padding-right: 0;
+  padding: 6px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.profile {
+  display: block;
+  height: 36px;
+  width: 36px;
+  font-size: 16px;
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    90deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(236, 236, 236, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
+  border-radius: 50%;
   &:hover {
     cursor: pointer;
   }

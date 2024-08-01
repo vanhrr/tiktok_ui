@@ -24,3 +24,11 @@ body {
 .iconsStyle {
   font-weight: bold;
 }
+//custom typpy tooltip
+body .tippy-box {
+  background-color: #555;
+  font-size: 1.6rem;
+  margin-top: 10px;
+  color: var(--white);
+  border-radius: 10px;
+}

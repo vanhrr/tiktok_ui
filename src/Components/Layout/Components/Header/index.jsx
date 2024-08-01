@@ -1,53 +1,105 @@
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCircleXmark,
   faEarthAsia,
   faEllipsisVertical,
-  faMagnifyingGlass,
   faMoon,
+  faPlus,
   faQuestionCircle,
   faScrewdriverWrench,
-  faSpinner,
+  faGear,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPaperPlane as PaperPlane,
+  faMessage as Message,
+  faUser as regUser,
+} from "@fortawesome/free-regular-svg-icons";
 import styles from "./Header.module.scss";
 import clsx from "clsx";
-import Tippy from "@tippyjs/react/headless";
+import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
-import { useState } from "react";
+import { Children, useState } from "react";
 
-import { Wrapper as PopperWrapper } from "~/Components/Popper/Wrapper";
-import AccountItem from "~/Components/AccountItem";
 import Button from "~/Components/Button";
 import Menu from "~/Components/Popper/Menu/Menu";
-
+import Search from "~/Components/Search";
 const cx = classNames.bind(styles);
+
 const MENU_ITEMS = [
   {
     icon: <FontAwesomeIcon icon={faScrewdriverWrench} />,
-    title: "Công cụ dành cho nhà sáng tạo",
+    title: "Creator Tools",
+    subItem: {
+      title: "Creator Tools",
+      data: [
+        {
+          title: "LIVE creator hub",
+        },
+      ],
+    },
   },
   {
     icon: <FontAwesomeIcon icon={faEarthAsia} />,
-    title: "Tiếng Việt",
+    title: "English",
+    subItem: {
+      title: "Language",
+      data: [
+        {
+          code: "en",
+          title: "English",
+        },
+        {
+          code: "vi",
+          title: "Vietnamese",
+        },
+      ],
+    },
   },
   {
     icon: <FontAwesomeIcon icon={faQuestionCircle} />,
-    title: "Phản hồi và trợ giúp",
+    title: "Feedback and help",
     to: "/feedback",
   },
   {
     icon: <FontAwesomeIcon icon={faMoon} />,
-    title: "Chế độ tối",
+    title: "Dark mode",
+    subItem: {
+      title: "Dark mode",
+      data: [
+        {
+          title: "Device Theme",
+        },
+        {
+          title: "Light mode",
+        },
+        {
+          title: "Dark mode",
+        },
+      ],
+    },
   },
 ];
-function Header() {
-  const [searchInput, setSearchInput] = useState("");
-  const [searchResult, setSearchResult] = useState([]);
 
-  const handleOnChange = (e) => {
-    setSearchInput(e.target.value);
-  };
+const PROFILE_ITEMS = [
+  {
+    icon: <FontAwesomeIcon icon={regUser} />,
+    title: "View profile",
+    to: "profile",
+  },
+  ...MENU_ITEMS,
+  {
+    icon: <FontAwesomeIcon icon={faGear} />,
+    title: "Setting",
+    to: "setting",
+  },
+];
+
+function Header() {
+  const [currentUser, setCurrentUser] = useState(true);
+
+  function handleLogOut() {
+    setCurrentUser(false);
+  }
   return (
     <header className={clsx(styles.wrapper)}>
       <div className={cx("inner")}>
@@ -93,84 +145,43 @@ function Header() {
             ></path>
           </svg>
         </div>
-        <Tippy
-          visible={searchInput.length > 0}
-          render={(attrs) => (
-            <div className={cx("searchResult")} tabIndex="-1" {...attrs}>
-              <PopperWrapper>
-                <AccountItem></AccountItem>
-                <AccountItem></AccountItem>
-                <AccountItem></AccountItem>
-              </PopperWrapper>
+        <Search />
+        {currentUser ? (
+          <div className={cx("headerAction")}>
+            <div className={cx("upload")}>
+              <FontAwesomeIcon className={cx("uploadIcon")} icon={faPlus} />
+              Tải lên
             </div>
-          )}
-        >
-          <div className={cx("searchBar")}>
-            <input
-              type="text"
-              className={cx("searchInput")}
-              placeholder="vanhrr"
-              onChange={handleOnChange}
-            />
-            <button className={cx("clear")}>
-              <FontAwesomeIcon icon={faCircleXmark} />
-            </button>
-            <FontAwesomeIcon className={cx("load")} icon={faSpinner} />
-            <button className={cx("searchIcon")}>
-              <FontAwesomeIcon icon={faMagnifyingGlass} />
-            </button>
-          </div>
-        </Tippy>
-        <div className={cx("headerAction")}>
-          <Button primary medium>
-            Log in
-          </Button>
-          <Menu items={MENU_ITEMS}>
-            <button className={cx("moreAction")}>
-              <FontAwesomeIcon icon={faEllipsisVertical} />
-            </button>
-          </Menu>
-        </div>
-        {/* <div className={cx("headerAction")}>
-          <div className={cx("upload")}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-plus iconsStyle"
-              viewBox="0 0 16 16"
+            <Tippy content="Message" placement="bottom">
+              <div className={cx("message")}>
+                <FontAwesomeIcon icon={PaperPlane} />
+              </div>
+            </Tippy>
+            <Tippy content="Message Box">
+              <div className={cx("messageBox")}>
+                <FontAwesomeIcon icon={Message} />
+              </div>
+            </Tippy>
+            <Menu
+              items={currentUser ? PROFILE_ITEMS : MENU_ITEMS}
+              isLogin={currentUser}
+              logOut={handleLogOut}
             >
-              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
-            </svg>
-            Tải lên
+              <div className={cx("profile")}></div>
+            </Menu>
           </div>
-          <div className={cx("message")}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-send"
-              viewBox="0 0 16 16"
-            >
-              <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
-            </svg>
+        ) : (
+          <div className={cx("headerAction")}>
+            <Button primary medium>
+              Log in
+            </Button>
+            <Menu items={MENU_ITEMS}>
+              <button className={cx("moreAction")}>
+                <FontAwesomeIcon icon={faEllipsisVertical} />
+              </button>
+            </Menu>
           </div>
-          <div className={cx("messageBox")}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              fill="currentColor"
-              class="bi bi-chat-square"
-              viewBox="0 0 16 16"
-            >
-              <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
-            </svg>
-          </div>
-          <div className={cx("profile")}></div>
-        </div> */}
+        )}
       </div>
     </header>
   );
